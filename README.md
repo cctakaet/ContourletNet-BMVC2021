@@ -8,8 +8,8 @@
 Images acquired from rainy scenes usually suffer from bad visibility which may damage the performance of computer vision applications. The rainy scenarios can be categorized into two classes: moderate rain and heavy rain scenes. Moderate rain scene mainly consists of rain streaks while heavy rain scene contains both rain streaks and the veiling effect (similar to haze). Although existing methods have achieved excellent performance on these two cases individually, it still lacks a general architecture to address both heavy rain and moderate rain scenarios effectively. In this paper, we construct a hierarchical multi-direction representation network by using the contourlet transform (CT) to address both moderate rain and heavy rain scenarios. The CT divides the image into the multi-direction subbands (MS) and the semantic subband (SS). First, the rain streak information is retrieved to the MS based on the multi-orientation property of the CT. Second, a hierarchical architecture is proposed to reconstruct the background information including damaged semantic information and the veiling effect in the SS. Last, the multi-level subband discriminator with the feedback error map is proposed. By this module, all subbands can be well optimized. This is the first architecture that can address both of the two scenarios effectively.
 
 
-[[Paper Download]](https://www.bmvc2021-virtualconference.com/assets/papers/0491.pdf)
-[[Supplementary Material Download]](https://www.bmvc2021-virtualconference.com/assets/supp/0491_supp.zip)
+[[Paper]](https://www.bmvc2021-virtualconference.com/assets/papers/0491.pdf)
+[[Supplementary Material]](https://www.bmvc2021-virtualconference.com/assets/supp/0491_supp.zip)
 <!-- [[Slide Download]](https://ntucc365-my.sharepoint.com/:b:/g/personal/f05943089_ntu_edu_tw/EVUaKr-l1UNDoUeuInao0RkB6kv5MDMfUcUCNp96rRZeTA?e=5LYZSC) -->
 
 You can also refer our previous works on other low-level vision applications!
@@ -40,42 +40,17 @@ To generate the recovered result you need:
 
 1. Python 3
 2. CPU or NVIDIA GPU + CUDA CuDNN
-3. tensorflow 1.15.0
-4. keras 2.3.0
-5. dtcwt 0.12.0
+3. Pytorch 1.0+
 
-Training
+For moderate rain (trained on Rain100H dataset)
 ```
-python ./train.py --logPath ./your_log_path --dataPath /path_to_data/data.npy --gtPath /path_to_gt/gt.npy --batchsize batchsize --epochs epochs --modelPath ./path_to_exist_model/model_to_load.h5 --validation_num number_of_validation_image --steps_per_epoch steps_per_epoch
+$ python test_real.py --ckpt ckpt/r100h --real_dir input_img/moderate
 ```
 
-*data.npy should be numpy of training image whose shape is (number_of_image, 480, 640, 3). The range is (0, 255) and the datatype is uint8 or int.<br>
-*gt.npy should be numpy of ground truth image, whose shape is (number_of_image, 480, 640, 3). The range is (0, 255) and datatype is uint8 or int.
-
-Example:
+For heavy rain (trained on Heavy Rain dataset)
 ```
-python ./train.py --logPath ./log --dataPath ./training_data.npy --gtPath ./training_gt.npy --batchsize 3 --epochs 1500 --modelPath ./previous_log/preivious_model.h5 --validation_num 200 --steps_per_epoch 80
+$ python test_real.py --ckpt ckpt/heavyrain --real_dir input_img/heavy
 ```
-
-
-
-Testing
-```
-$ python ./predict.py -dataroot ./your_dataroot -datatype datatype -predictpath ./output_path -batch_size batchsize
-```
-*datatype default: tif, jpg ,png
-
-Examples
-```
-$ 
-python ./predict.py -dataroot ./testImg -predictpath ./p -batch_size 3
-python ./predict.py -dataroot ./testImg -datatype tif -predictpath ./p -batch_size 3
-```
-
-
-The pre-trained model can be downloaded from: https://ntucc365-my.sharepoint.com/:u:/g/personal/f05943089_ntu_edu_tw/EZtus9ex-GtNukLuSxWGmPIBEJIzRFMbEl0dFeZ_oTQnVQ?e=xnfqFL. 
-Put the "finalmodel.h5" to the 'modelParam'.
-
 
 # Citations
 Please cite this paper in your publications if it is helpful for your tasks:    
